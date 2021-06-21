@@ -21,4 +21,19 @@ class StorageService {
   String getPin() {
     return storage.getString(Constants.PinKey) ?? '0000';
   }
+
+  Future<bool> updateTableIndex(List<int> indexes) async {
+    await storage.setInt(Constants.firstIndexKey, indexes.elementAt(0));
+    await storage.setInt(Constants.SecondIndexKey, indexes.elementAt(1));
+    await storage.setInt(Constants.ThirdIndexKey, indexes.elementAt(2));
+    return Future.value(true);
+  }
+
+  List<int> getTableIndex() {
+    return [
+      storage.getInt(Constants.firstIndexKey) ?? 0,
+      storage.getInt(Constants.SecondIndexKey) ?? 0,
+      storage.getInt(Constants.ThirdIndexKey) ?? 0,
+    ];
+  }
 }

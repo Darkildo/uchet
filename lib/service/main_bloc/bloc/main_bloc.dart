@@ -26,6 +26,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   String? fileName;
   String? currentDate;
   String? currentPin;
+  List<int>? currentIndex;
   PageList currentPage = PageList.pinpage;
   StorageService? storage;
   int currentPageIndex = 0;
@@ -42,6 +43,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
           currentDate = storage!.getDate();
           pageParams['DateSelected'] = true;
         }
+        currentIndex = storage!.getTableIndex();
 
         currentPage = PageList.MainAppPage;
         yield LoadedAppState(currentPage, pageParams, currentPageIndex);
@@ -77,6 +79,10 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     }
     if (event is ChangePinEvent) {
       await storage!.updatePin(event.newPin);
+      yield LoadedAppState(currentPage, pageParams, currentPageIndex);
+    }
+    if (event is UpdateTableIndexEvent) {
+      await storage!.updateTableIndex(event.newIndexes);
       yield LoadedAppState(currentPage, pageParams, currentPageIndex);
     }
   }

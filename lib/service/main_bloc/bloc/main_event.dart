@@ -31,3 +31,8 @@ class ChangePinEvent extends MainEvent {
   final String newPin;
   ChangePinEvent(this.newPin);
 }
+
+class UpdateTableIndexEvent extends MainEvent {
+  final List<int> newIndexes;
+  UpdateTableIndexEvent(this.newIndexes);
+}

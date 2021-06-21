@@ -22,7 +22,10 @@ class _SettingPageState extends State<SettingPage> {
               onPressed: () =>
                   _changePassword(BlocProvider.of<MainBloc>(context)),
               child: Text('Сменить пароль')),
-          ElevatedButton(onPressed: () {}, child: Text('Изменить столбцы')),
+          ElevatedButton(
+              onPressed: () =>
+                  _changeTableParam(BlocProvider.of<MainBloc>(context)),
+              child: Text('Изменить столбцы')),
           ElevatedButton(
               onPressed: () =>
                   BlocProvider.of<MainBloc>(context).add(SignOutEvent()),
@@ -55,6 +58,104 @@ class _SettingPageState extends State<SettingPage> {
                         }
                       }),
                     ),
+                  )
+                ],
+              ));
+        });
+  }
+
+  void _changeTableParam(MainBloc bloc) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          List<int> indexes = [0, 0, 0];
+          return Dialog(
+              elevation: 5,
+              backgroundColor: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Индекс ФИО',
+                          hintStyle: TextStyle(fontSize: 16),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 0,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(16),
+                        ),
+                        onChanged: (val) {
+                          indexes[0] = int.tryParse(val) ?? 0;
+                        },
+                      )),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Индекс накладной',
+                          hintStyle: TextStyle(fontSize: 16),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 0,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(16),
+                        ),
+                        onChanged: (val) {
+                          indexes[1] = int.tryParse(val) ?? 0;
+                        },
+                      )),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Индекс подписи',
+                          hintStyle: TextStyle(fontSize: 16),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 0,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(16),
+                        ),
+                        onChanged: (val) {
+                          indexes[2] = int.tryParse(val) ?? 0;
+                        },
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('Отмена')),
+                      ElevatedButton(
+                          onPressed: () {
+                            bloc.add(UpdateTableIndexEvent(indexes));
+                            Navigator.pop(context);
+                          },
+                          child: Text('Сохранить'))
+                    ],
                   )
                 ],
               ));

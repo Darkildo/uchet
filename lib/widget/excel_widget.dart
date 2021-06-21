@@ -75,7 +75,7 @@ class _ExcelViewState extends State<ExcelView> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            _selectItem(index, table!);
+                            _selectItem(index, table!, bloc);
                           },
                           child: Card(
                               margin: EdgeInsets.symmetric(
@@ -87,7 +87,7 @@ class _ExcelViewState extends State<ExcelView> {
                                     table != null
                                         ? table.sheets.values.first.rows
                                             .elementAt(index)
-                                            .elementAt(2)!
+                                            .elementAt(bloc.currentIndex![0])!
                                             .props
                                             .first
                                             .toString()
@@ -101,7 +101,7 @@ class _ExcelViewState extends State<ExcelView> {
         ));
   }
 
-  void _selectItem(index, Excel table) {
+  void _selectItem(index, Excel table, MainBloc bloc) {
     showDialog(
         context: context,
         builder: (_) {
@@ -124,7 +124,7 @@ class _ExcelViewState extends State<ExcelView> {
                         Text(
                             table.sheets.values.first.rows
                                 .elementAt(index)
-                                .elementAt(2)!
+                                .elementAt(bloc.currentIndex![0])!
                                 .props
                                 .first
                                 .toString(),
@@ -145,7 +145,7 @@ class _ExcelViewState extends State<ExcelView> {
                         Text(
                             table.sheets.values.first.rows
                                 .elementAt(index)
-                                .elementAt(15)!
+                                .elementAt(bloc.currentIndex![1])!
                                 .props
                                 .first
                                 .toString(),
