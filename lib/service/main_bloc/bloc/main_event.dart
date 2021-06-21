@@ -36,3 +36,7 @@ class UpdateTableIndexEvent extends MainEvent {
   final List<int> newIndexes;
   UpdateTableIndexEvent(this.newIndexes);
 }
+
+class ClearDrawCanvasEvent extends MainEvent {}
+
+class SaveDrawCanvasEvent extends MainEvent {}

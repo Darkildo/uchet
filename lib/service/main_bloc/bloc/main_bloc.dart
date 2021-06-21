@@ -5,11 +5,13 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sklad_uchet/const.dart' as Constants;
 import 'package:sklad_uchet/enum/pages_enum.dart';
 import 'package:sklad_uchet/service/storage_service.dart';
+import 'package:sklad_uchet/widget/lisence_painter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 part 'main_event.dart';
@@ -21,11 +23,13 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     'DateSelected': false,
     'TableSelected': false
   };
+  List<Offset?> points = [];
   Excel? excel;
   List<int> params = [0, 0, 0];
   String? fileName;
   String? currentDate;
   String? currentPin;
+  Image? image;
   List<int>? currentIndex;
   PageList currentPage = PageList.pinpage;
   StorageService? storage;
@@ -85,6 +89,25 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       await storage!.updateTableIndex(event.newIndexes);
       currentIndex = event.newIndexes;
       yield LoadedAppState(currentPage, pageParams, currentPageIndex);
+    }
+    if (event is ClearDrawCanvasEvent) {
+      points.clear();
+    }
+    if (event is SaveDrawCanvasEvent) {
+      //List<Offset> clearpoints = [];
+      image = Image.memory((await Signature(points).getImage()));
+
+      // String varv = image!.image.toString();
+      // print(varv);
+
+      // points.forEach((element)async  {
+      //   if (element != null) clearpoints.add(element);
+
+      // });
+      this.add(ClearDrawCanvasEvent());
+      // Image.memory()
+
+      //Image.file(File.fromRawPath(Uint8List.fromList( clearpoints.toList())));
     }
   }
 }

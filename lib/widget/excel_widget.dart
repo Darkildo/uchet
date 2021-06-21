@@ -96,6 +96,7 @@ class _ExcelViewState extends State<ExcelView> {
                         );
                       }),
                 )),
+            if (bloc.image != null) Image(image: bloc.image!.image)
           ],
         ));
   }
@@ -104,6 +105,7 @@ class _ExcelViewState extends State<ExcelView> {
     showDialog(
         context: context,
         builder: (_) {
+          bloc.add(ClearDrawCanvasEvent());
           return Dialog(
               elevation: 0,
               backgroundColor: Colors.white,
@@ -155,8 +157,14 @@ class _ExcelViewState extends State<ExcelView> {
                   SizedBox(
                       width: MediaQuery.of(context).size.width * 0.7,
                       height: MediaQuery.of(context).size.height * 0.4,
-                      child: DocPainter()),
-                  ElevatedButton(onPressed: () {}, child: Text('Подписать'))
+                      child: DocPainter(
+                        bloc: bloc,
+                      )),
+                  ElevatedButton(
+                      onPressed: () {
+                        bloc.add(SaveDrawCanvasEvent());
+                      },
+                      child: Text('Подписать'))
                 ],
               ));
         });
