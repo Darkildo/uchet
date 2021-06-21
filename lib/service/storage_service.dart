@@ -13,4 +13,12 @@ class StorageService {
   String getDate() {
     return storage.getString(Constants.DateKey) ?? '';
   }
+
+  Future<bool> updatePin(String newPin) async {
+    return await storage.setString(Constants.PinKey, newPin);
+  }
+
+  String getPin() {
+    return storage.getString(Constants.PinKey) ?? '0000';
+  }
 }

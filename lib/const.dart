@@ -1,2 +1,2 @@
-const String PinCode = '1488';
 const String DateKey = 'qsdbvtrewfwfe';
+const String PinKey = 'qwfgtyf3rwerw';

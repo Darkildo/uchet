@@ -24,3 +24,10 @@ class ChangePageEvent extends MainEvent {
   final int pageIndex;
   ChangePageEvent(this.pageIndex);
 }
+
+class SignOutEvent extends MainEvent {}
+
+class ChangePinEvent extends MainEvent {
+  final String newPin;
+  ChangePinEvent(this.newPin);
+}

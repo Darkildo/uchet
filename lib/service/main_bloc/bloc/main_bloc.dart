@@ -25,6 +25,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   List<int> params = [0, 0, 0];
   String? fileName;
   String? currentDate;
+  String? currentPin;
   PageList currentPage = PageList.pinpage;
   StorageService? storage;
   int currentPageIndex = 0;
@@ -32,13 +33,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   Stream<MainState> mapEventToState(MainEvent event) async* {
     if (event is StartBlocEvent) {
       storage = StorageService(await SharedPreferences.getInstance());
-
+      currentPin = storage!.getPin();
       yield LoadedAppState(currentPage, pageParams, currentPageIndex);
     }
     if (event is InputPinEvent) {
-      if (event.pin == Constants.PinCode) {
+      if (event.pin == currentPin) {
         if (storage!.getDate().isNotEmpty) {
-          print(storage!.getDate());
           currentDate = storage!.getDate();
           pageParams['DateSelected'] = true;
         }
@@ -68,6 +68,15 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     }
     if (event is ChangePageEvent) {
       currentPageIndex = event.pageIndex;
+      yield LoadedAppState(currentPage, pageParams, currentPageIndex);
+    }
+    if (event is SignOutEvent) {
+      currentPage = PageList.pinpage;
+      currentPageIndex = 0;
+      this.add(StartBlocEvent());
+    }
+    if (event is ChangePinEvent) {
+      await storage!.updatePin(event.newPin);
       yield LoadedAppState(currentPage, pageParams, currentPageIndex);
     }
   }
