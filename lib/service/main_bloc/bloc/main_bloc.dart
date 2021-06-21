@@ -83,6 +83,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     }
     if (event is UpdateTableIndexEvent) {
       await storage!.updateTableIndex(event.newIndexes);
+      currentIndex = event.newIndexes;
       yield LoadedAppState(currentPage, pageParams, currentPageIndex);
     }
   }

@@ -1,42 +1,57 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-class TouchPoints {
-  late Paint paint;
-  late Offset points;
-  TouchPoints(this.points, this.paint);
+class DocPainter extends StatefulWidget {
+  DocPainter({Key? key}) : super(key: key);
+
+  @override
+  List<Offset?> _points = [];
+  _DocPainterState createState() => _DocPainterState();
 }
 
-class DocPainter extends CustomPainter {
-  DocPainter({this.pointsList});
+class _DocPainterState extends State<DocPainter> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: GestureDetector(
+        onPanUpdate: (DragUpdateDetails details) {
+          setState(() {
+            RenderBox object = context.findRenderObject()! as RenderBox;
+            Offset _localPosition =
+                object.globalToLocal(details.globalPosition);
+            // _points = List.from(_points)..add(_localPosition);
+            widget._points.add(_localPosition);
+          });
+        },
+        onPanEnd: (DragEndDetails details) => widget._points.add(null),
+        child: CustomPaint(
+          painter: Signature(widget._points),
+          size: Size.fromHeight(MediaQuery.of(context).size.height * 0.4),
+        ),
+      ),
+    );
+  }
+}
 
-  //Keep track of the points tapped on the screen
-  List<TouchPoints>? pointsList = [];
-  List<Offset> offsetPoints = [];
+class Signature extends CustomPainter {
+  List<Offset?> points;
 
-  //This is where we can draw on canvas.
+  Signature(this.points);
+
   @override
   void paint(Canvas canvas, Size size) {
-    for (int i = 0; i < pointsList!.length - 1; i++) {
-      if (pointsList![i] != null && pointsList![i + 1] != null) {
-        //Drawing line when two consecutive points are available
-        canvas.drawLine(pointsList![i].points, pointsList![i + 1].points,
-            pointsList![i].paint);
-      } else if (pointsList![i] != null && pointsList![i + 1] == null) {
-        offsetPoints.clear();
-        offsetPoints.add(pointsList![i].points);
-        offsetPoints.add(Offset(
-            pointsList![i].points.dx + 0.1, pointsList![i].points.dy + 0.1));
+    Paint paint = Paint()
+      ..color = Colors.blue
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 5.0;
 
-        //Draw points when two points are not next to each other
-        canvas.drawPoints(PointMode.points, offsetPoints, pointsList![i].paint);
+    for (int i = 0; i < points.length - 1; i++) {
+      if (points[i] != null && points[i + 1] != null) {
+        canvas.drawLine(points[i]!, points[i + 1]!, paint);
       }
     }
   }
 
-  //Called when CustomPainter is rebuilt.
-  //Returning true because we want canvas to be rebuilt to reflect new changes.
   @override
-  bool shouldRepaint(DocPainter oldDelegate) => true;
+  // bool shouldRepaint(Signature oldDelegate) => oldDelegate.points != points;
+  bool shouldRepaint(Signature oldDelegate) => true;
 }

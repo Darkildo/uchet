@@ -68,7 +68,7 @@ class _SettingPageState extends State<SettingPage> {
     showDialog(
         context: context,
         builder: (_) {
-          List<int> indexes = [0, 0, 0];
+          List<int> indexes = bloc.currentIndex ?? [0, 0, 0];
           return Dialog(
               elevation: 5,
               backgroundColor: Colors.white,

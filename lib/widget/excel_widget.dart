@@ -18,7 +18,6 @@ class _ExcelViewState extends State<ExcelView> {
   Widget build(BuildContext context) {
     MainBloc bloc = BlocProvider.of<MainBloc>(context);
     Excel? table = bloc.excel;
-    ;
 
     return Padding(
         padding:
@@ -153,6 +152,10 @@ class _ExcelViewState extends State<ExcelView> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: DocPainter()),
                   ElevatedButton(onPressed: () {}, child: Text('Подписать'))
                 ],
               ));
