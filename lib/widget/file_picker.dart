@@ -13,14 +13,18 @@ class FilepickerWidget extends StatefulWidget {
 
 class _FilepickerState extends State<FilepickerWidget> {
   Future<void> _pickfile() async {
-    if (await Permission.storage.isGranted) {
+    if (await Permission.storage.isGranted &&
+        await Permission.manageExternalStorage.isGranted) {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
       if (result != null && result.isSinglePick) {
         BlocProvider.of<MainBloc>(context)
             .add(SubmitExcelEvent(result.files.first));
       }
     } else {
-      await Permission.storage.request();
+      if (!(await Permission.storage.isGranted))
+        await Permission.storage.request();
+      if (!(await Permission.manageExternalStorage.isGranted))
+        await Permission.manageExternalStorage.request();
       _pickfile();
     }
   }

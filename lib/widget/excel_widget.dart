@@ -96,7 +96,6 @@ class _ExcelViewState extends State<ExcelView> {
                         );
                       }),
                 )),
-            if (bloc.image != null) Image(image: bloc.image!.image)
           ],
         ));
   }
@@ -162,7 +161,8 @@ class _ExcelViewState extends State<ExcelView> {
                       )),
                   ElevatedButton(
                       onPressed: () {
-                        bloc.add(SaveDrawCanvasEvent());
+                        bloc.add(SaveDrawCanvasEvent(index));
+                        Navigator.of(context).pop();
                       },
                       child: Text('Подписать'))
                 ],

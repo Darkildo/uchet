@@ -73,9 +73,6 @@ class Signature extends CustomPainter {
     }
     final picture = recorder.endRecording();
     ui.Image image = await picture.toImage(200, 200);
-
-    //ByteData rawmemory = (await image.toByteData())!;
-
     final buffer = await image.toByteData(format: ui.ImageByteFormat.png);
 
     return buffer!.buffer.asUint8List();

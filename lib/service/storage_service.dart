@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sklad_uchet/const.dart' as Constants;
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -35,5 +38,44 @@ class StorageService {
       storage.getInt(Constants.SecondIndexKey) ?? 0,
       storage.getInt(Constants.ThirdIndexKey) ?? 0,
     ];
+  }
+
+  saveTable(List<int>? bytes, String path) {
+    var savedTable = File(path);
+    // savedTable.writeAsBytes();
+  }
+
+  Future<bool> saveTableToStorage(List<int>? bytes, String fileName) async {
+    Directory directory;
+    try {
+      directory = (await getExternalStorageDirectory())!;
+      String newPath = "";
+      print(directory);
+      List<String> paths = directory.path.split("/");
+      for (int x = 1; x < paths.length; x++) {
+        String folder = paths[x];
+        if (folder != "Android") {
+          newPath += "/" + folder;
+        } else {
+          break;
+        }
+      }
+      newPath = newPath + "/RPSApp";
+      directory = Directory(newPath);
+
+      File saveFile = File(directory.path + "/$fileName");
+      if (!await directory.exists()) {
+        await directory.create();
+      }
+      if (await directory.exists()) {
+        saveFile.writeAsStringSync(bytes.toString());
+
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }

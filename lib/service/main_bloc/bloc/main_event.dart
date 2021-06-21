@@ -39,4 +39,7 @@ class UpdateTableIndexEvent extends MainEvent {
 
 class ClearDrawCanvasEvent extends MainEvent {}
 
-class SaveDrawCanvasEvent extends MainEvent {}
+class SaveDrawCanvasEvent extends MainEvent {
+  final int userIndex;
+  SaveDrawCanvasEvent(this.userIndex);
+}
