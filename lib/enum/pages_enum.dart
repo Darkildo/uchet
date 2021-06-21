@@ -1,0 +1,1 @@
+enum PageList { pinpage, MainAppPage }
