@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sklad_uchet/enum/pages_enum.dart';
 import 'package:sklad_uchet/pages/main_page.dart';
 import 'package:sklad_uchet/pages/pin_page.dart';
+import 'package:sklad_uchet/pages/setting_page.dart';
 import 'package:sklad_uchet/service/main_bloc/bloc/main_bloc.dart';
 
 class PageRouter extends StatelessWidget {
@@ -22,7 +23,12 @@ class PageRouter extends StatelessWidget {
             return PinCodePage();
 
           case PageList.MainAppPage:
-            return MainPage();
+            if (state.currentPageIndex == 0) {
+              return MainPage();
+            } else {
+              return SettingPage();
+            }
+
           default:
             return Center(
               child: Text('App is loaded!'),
