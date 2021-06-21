@@ -48,7 +48,7 @@ class StorageService {
   Future<bool> saveTableToStorage(List<int>? bytes, String fileName) async {
     Directory directory;
     try {
-      directory = (await getExternalStorageDirectory())!;
+      directory = (await getApplicationDocumentsDirectory());
       String newPath = "";
       print(directory);
       List<String> paths = directory.path.split("/");
@@ -65,10 +65,10 @@ class StorageService {
 
       File saveFile = File(directory.path + "/$fileName");
       if (!await directory.exists()) {
-        await directory.create();
+        await directory.create(recursive: true);
       }
       if (await directory.exists()) {
-        saveFile.writeAsStringSync(bytes.toString());
+        saveFile.writeAsBytesSync(bytes!);
 
         return true;
       }
