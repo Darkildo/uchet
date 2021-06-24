@@ -68,32 +68,35 @@ class _ExcelViewState extends State<ExcelView> {
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   elevation: 30,
                   child: ListView.builder(
-                      itemCount: table != null
-                          ? table.sheets.values.first.rows.length
-                          : 0,
+                      itemCount: table != null ? bloc.excelRows.length : 0,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            _selectItem(index, table!, bloc);
-                          },
-                          child: Card(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 7),
-                              elevation: 10,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    table != null
-                                        ? table.sheets.values.first.rows
-                                            .elementAt(index)
-                                            .elementAt(bloc.currentIndex![0])!
-                                            .props
-                                            .first
-                                            .toString()
-                                        : 'none',
-                                    style: TextStyle(fontSize: 24)),
-                              )),
-                        );
+                        return (table != null &&
+                                bloc.excelRows
+                                        .elementAt(index)
+                                        .rowElement
+                                        .elementAt(bloc.currentIndex![0]) !=
+                                    null)
+                            ? Card(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 7),
+                                elevation: 10,
+                                child: GestureDetector(
+                                    onTap: () {
+                                      _selectItem(index, table, bloc);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                          bloc.excelRows
+                                              .elementAt(index)
+                                              .rowElement
+                                              .elementAt(bloc.currentIndex![0])!
+                                              .props
+                                              .first
+                                              .toString(),
+                                          style: TextStyle(fontSize: 24)),
+                                    )))
+                            : Text('123');
                       }),
                 )),
           ],
@@ -122,8 +125,9 @@ class _ExcelViewState extends State<ExcelView> {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                            table.sheets.values.first.rows
+                            bloc.excelRows
                                 .elementAt(index)
+                                .rowElement
                                 .elementAt(bloc.currentIndex![0])!
                                 .props
                                 .first

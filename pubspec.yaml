@@ -34,7 +34,8 @@ dependencies:
   syncfusion_flutter_datepicker: ^19.1.69-beta
   file_picker: ^3.0.2+2
   permission_handler: ^8.1.1
-  path_provider: ^2.0.2
+  image: ^3.0.2
+  syncfusion_flutter_xlsio: ^19.1.69-beta
 
 dev_dependencies:
   flutter_test:

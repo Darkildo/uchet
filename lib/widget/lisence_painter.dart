@@ -71,6 +71,7 @@ class Signature extends CustomPainter {
         canvas.drawLine(points[i]!, points[i + 1]!, paint);
       }
     }
+
     final picture = recorder.endRecording();
     ui.Image image = await picture.toImage(200, 200);
     final buffer = await image.toByteData(format: ui.ImageByteFormat.png);

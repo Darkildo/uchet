@@ -40,30 +40,35 @@ class StorageService {
     ];
   }
 
-  saveTable(List<int>? bytes, String path) {
-    var savedTable = File(path);
-    // savedTable.writeAsBytes();
-  }
-
-  Future<bool> saveTableToStorage(List<int>? bytes, String fileName) async {
-    Directory directory;
+  Future<bool> saveTableToStorage(
+      List<int>? bytes, String path, String filename) async {
+    ;
     try {
-      directory = (await getApplicationDocumentsDirectory());
-      String newPath = "";
-      print(directory);
-      List<String> paths = directory.path.split("/");
-      for (int x = 1; x < paths.length; x++) {
-        String folder = paths[x];
-        if (folder != "Android") {
-          newPath += "/" + folder;
-        } else {
-          break;
-        }
-      }
-      newPath = newPath + "/RPSApp";
-      directory = Directory(newPath);
+      String dir;
+      dir = (await getExternalStorageDirectory())!.path;
+      Directory directory = Directory(dir);
+      // directory = (await )!;
 
-      File saveFile = File(directory.path + "/$fileName");
+      // directory = (await getApplicationDocumentsDirectory());
+      // String newPath = "";
+      print(directory);
+      // List<String> paths = directory.path.split("/");
+      // for (int x = 1; x < paths.length; x++) {
+      //   String folder = paths[x];
+      //   if (folder != "Android") {
+      //     newPath += "/" + folder;
+      //   } else {
+      //     break;
+      //   }
+      // }
+      // newPath = newPath + "";
+      // directory = Directory(newPath);
+      File saveFile = File(directory.path + '/' + path);
+      //  File saveFile = File(
+      //    directory.path + '/' + filename.replaceAll(new RegExp(r"\s+"), ""));
+      // print(saveFile.path);
+      // print(!await directory.exists());
+
       if (!await directory.exists()) {
         await directory.create(recursive: true);
       }
