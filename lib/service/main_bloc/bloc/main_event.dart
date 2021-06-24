@@ -43,3 +43,8 @@ class SaveDrawCanvasEvent extends MainEvent {
   final int userIndex;
   SaveDrawCanvasEvent(this.userIndex);
 }
+
+class ChangeFilterEvent extends MainEvent {
+  final String filteredValue;
+  ChangeFilterEvent(this.filteredValue);
+}

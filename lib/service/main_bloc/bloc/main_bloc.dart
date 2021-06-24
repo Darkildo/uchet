@@ -39,6 +39,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   String? fileName;
   String? currentDate;
   String? currentPin;
+  String filterValue = '';
   Image? image;
   List<int>? currentIndex;
   PageList currentPage = PageList.pinpage;
@@ -82,11 +83,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       //excelworkbook.
 
       excel = Excel.decodeBytes(bytes);
-      Sheet temp = excel!.sheets.values.first;
-      excelRows = sortRows(temp.rows);
-      print('values: ' +
-          temp.rows.length.toString() +
-          excelRows.length.toString());
+
+      excelRows = sortRows(excel!.sheets.values.first.rows, filterValue);
 
       // excelRows.forEach((element) {
       //   print(element.sourceIndex);
@@ -136,13 +134,26 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
       //Image.file(File.fromRawPath(Uint8List.fromList( clearpoints.toList())));
     }
+    if (event is ChangeFilterEvent) {
+      filterValue = event.filteredValue;
+      excelRows = sortRows(excel!.sheets.values.first.rows, filterValue);
+      yield LoadedAppState(currentPage, pageParams, currentPageIndex);
+    }
   }
 
-  List<SortedRow> sortRows(List<List<Data?>?> rows) {
+  List<SortedRow> sortRows(List<List<Data?>?> rows, String filterValue) {
     List<SortedRow> newRows = [];
     rows.forEach((element) {
-      if (element != null && element.elementAt(this.currentIndex![0]) != null)
-        newRows.add(SortedRow(element, rows.indexOf(element)));
+      if (element != null &&
+          element.elementAt(this.currentIndex![0]) != null &&
+          (filterValue.isNotEmpty
+              ? element
+                  .elementAt(this.currentIndex![0])!
+                  .props
+                  .first
+                  .toString()
+                  .contains(filterValue)
+              : true)) newRows.add(SortedRow(element, rows.indexOf(element)));
     });
 
     return newRows;

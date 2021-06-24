@@ -45,6 +45,9 @@ class _ExcelViewState extends State<ExcelView> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                  onChanged: (val) {
+                    bloc.add(ChangeFilterEvent(val));
+                  },
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
